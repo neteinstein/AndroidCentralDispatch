@@ -21,7 +21,7 @@ or
 <code>androidDispatch.submitTask(Class clazz, DispatchRunnable r)</code>  
 (the class where you call the method DOES NOT NEED to be the same which subscribed)
 
-5. That all folks, just don't forget to unregister when you don't need it anymore, and destroy before closing the app.
+5. That's all folks, just don't forget to unregister when you don't need it anymore, and destroy before closing the app.
 <code>androidDispatch.unregister()</code>
 and 
 <code>androidDispatch.destroy(boolean mayInterruptThreads)</code>
