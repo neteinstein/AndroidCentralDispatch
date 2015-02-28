@@ -33,6 +33,15 @@ public class AndroidDispatch {
         mExecutor = ThreadPoolUtils.getFixedThreadPool("AndroidDispatchTP", maxPoolSize, maxPoolSize);
     }
 
+    public void destroy() {
+        mDispatchThread.shutdownNow();
+        mExecutor.shutdownNow();
+        for (DispatchQueue dispatchQueue : queueMap.values()) {
+            dispatchQueue.destroy(true);
+        }
+        queueMap.clear();
+    }
+
     public void register(int classMaxThreads) {
         final StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         Class clazz = stackTraceElements[1].getClass();
@@ -50,6 +59,10 @@ public class AndroidDispatch {
         queueMap.put(clazz, dispatchQueue);
     }
 
+    public void unregister() {
+        unregister(false);
+    }
+
     public void unregister(boolean interruptPendingTasks) {
         final StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         Class clazz = stackTraceElements[1].getClass();
@@ -57,7 +70,7 @@ public class AndroidDispatch {
         DispatchQueue dispatchQueue = queueMap.remove(clazz);
         if (dispatchQueue != null && interruptPendingTasks) {
             // What should happen here?
-            dispatchQueue.destroy();
+            dispatchQueue.destroy(interruptPendingTasks);
         }
     }
 
@@ -69,7 +82,7 @@ public class AndroidDispatch {
         DispatchQueue dispatchQueue = queueMap.remove(clazz);
         if (dispatchQueue != null && interruptPendingTasks) {
             // What should happen here?
-            dispatchQueue.destroy();
+            dispatchQueue.destroy(interruptPendingTasks);
         }
     }
 

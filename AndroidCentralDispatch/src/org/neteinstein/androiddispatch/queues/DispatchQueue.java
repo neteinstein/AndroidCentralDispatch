@@ -12,7 +12,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class DispatchQueue {
 
-
     private ThreadPoolExecutor executor;
 
     private final Queue<DispatchRunnable> tasks = new LinkedList<DispatchRunnable>();
@@ -23,11 +22,15 @@ public class DispatchQueue {
         availableThreadsForQueue.set(classMaxThreads);
     }
 
-    public void destroy() {
+    public void destroy(boolean mayInterruptThreads) {
         tasks.clear();
+        if (mayInterruptThreads) {
+            executor.shutdown();
+        } else {
+            executor.shutdownNow();
+        }
         executor = null;
     }
-
 
     public void dispatch(DispatchRunnable task) {
         if (task == null) {
