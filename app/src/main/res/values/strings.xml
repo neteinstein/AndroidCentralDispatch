@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AndroidDispatchCenter Test</string>
+    <string name="main_button_label">Trigger test!</string>
+    <string name="main_text_hint">Test result...</string>
+    <string name="action_settings">Settings</string>
+
+</resources>

@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AndroidCentralDispatch/AndroidCentralDispatch.iml" filepath="$PROJECT_DIR$/AndroidCentralDispatch/AndroidCentralDispatch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidDispatchCenterProject.iml" filepath="$PROJECT_DIR$/AndroidDispatchCenterProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/androiddispatchcenter/androiddispatchcenter.iml" filepath="$PROJECT_DIR$/androiddispatchcenter/androiddispatchcenter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
