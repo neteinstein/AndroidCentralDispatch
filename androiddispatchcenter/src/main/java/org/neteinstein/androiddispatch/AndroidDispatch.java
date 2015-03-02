@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public class AndroidDispatch {
     private static AndroidDispatch ourInstance;
-    private int mMaxPoolSize;
+    private int mMaxPoolSize = 1;
     private ConcurrentHashMap<Class, DispatchQueue> queueMap = null;
     private ConcurrentHashMap<String, Future> futureMap = null;
     private DispatchThreadPoolExecutor mExecutor = null;
@@ -162,13 +162,17 @@ public class AndroidDispatch {
     }
 
     public void dispatchFinished(final String dispatchId, final Class clazz) {
+
         DispatchQueue dispatchQueue = queueMap.get(clazz);
         if (dispatchQueue != null) {
-            dispatchQueue.releaseThread();
-            reEvaluateQueue(dispatchQueue);
+            synchronized (clazz) {
+                dispatchQueue.releaseThread();
+                reEvaluateQueue(dispatchQueue);
+            }
             final DispatchObserverCallBack callback = dispatchQueue.getCallback();
             if (callback != null) {
                 callback.dispatchFinished(dispatchId, clazz);
+
             }
         }
     }

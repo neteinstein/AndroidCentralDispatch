@@ -12,6 +12,8 @@ import org.neteinstein.androiddispatch.AndroidDispatch;
  */
 public class UITestClass implements AndroidDispatch.DispatchObserverCallBack {
 
+    private final String TAG = "UITestClass";
+
     private int maxThreads = 3;
     private A a;
     private B b;
@@ -23,18 +25,18 @@ public class UITestClass implements AndroidDispatch.DispatchObserverCallBack {
         a = new A();
         b = new B();
         c = new C();
-        classList = new Class[] { a.getClass(), b.getClass(), c.getClass() };
+        classList = new Class[]{a.getClass(), b.getClass(), c.getClass()};
         mTextView = textView;
     }
 
     public void testDispatch() {
         AndroidDispatch androidDispatch = AndroidDispatch.getInstance(maxThreads);
-        androidDispatch.register(a.getClass(), a.maxThreads, null);
-        androidDispatch.register(b.getClass(), b.maxThreads, null);
-        androidDispatch.register(c.getClass(), c.maxThreads, null);
+        androidDispatch.register(a.getClass(), a.maxThreads, dispatchCallback);
+        androidDispatch.register(b.getClass(), b.maxThreads, dispatchCallback);
+        androidDispatch.register(c.getClass(), c.maxThreads, dispatchCallback);
 
         int pointer = 0;
-        int counter= 0;
+        int counter = 0;
         for (int i = 0; i < 30; i++) {
             if (pointer > classList.length - 1) {
                 pointer = 0;
@@ -45,35 +47,45 @@ public class UITestClass implements AndroidDispatch.DispatchObserverCallBack {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(clazz.toString(), "\nStarting " + "from " + clazz);
+                    writeToUI("\nStarting " + "from " + clazz.getSimpleName());
+                    Log.d(TAG, "\nStarting " + "from " + clazz.getSimpleName());
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
-                    Log.d(clazz.toString(), "\nRunnable from " + clazz);
-
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mTextView.append("\nRunnable from " + clazz);
-                        }
-                    });
-
                 }
             };
             String id = androidDispatch.dispatch(clazz, r);
-            Log.d(clazz.toString(), "\nDispatched " + counter + " - " + id + "from " + clazz);
+            writeToUI("\nDispatched " + counter + " - " + id + "from " + clazz.getSimpleName());
+            Log.d(TAG, "\nDispatched " + counter + " - " + id + "from " + clazz.getSimpleName());
 
             counter++;
         }
 
     }
 
+    private AndroidDispatch.DispatchObserverCallBack dispatchCallback = new AndroidDispatch.DispatchObserverCallBack() {
+        @Override
+        public void dispatchFinished(String dispatchId, Class clazz) {
+            writeToUI("\nFinished " + dispatchId + " from " + clazz);
+            Log.d(TAG, "Finished " + dispatchId + " from " + clazz);
+        }
+    };
+
+    private void writeToUI(final String log) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                mTextView.append(log);
+            }
+        });
+    }
+
     @Override
     public void dispatchFinished(String dispatchId, Class clazz) {
-        Log.d(clazz.toString(), "\nDispatch Finished " + dispatchId + "from " + clazz);
+        Log.d(TAG, "\nDispatch Finished " + dispatchId + "from " + clazz.getSimpleName());
     }
 
     private class A {

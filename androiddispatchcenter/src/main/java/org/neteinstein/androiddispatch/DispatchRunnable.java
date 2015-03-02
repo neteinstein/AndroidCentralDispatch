@@ -19,8 +19,14 @@ public final class DispatchRunnable implements Runnable {
 
     @Override
     public void run() {
-        mRunnable.run();
-        mAndroidDispatch.dispatchFinished(mDispatchId, mClazz);
+        try {
+            mRunnable.run();
+        } catch (Throwable e) {
+            // Log
+        } finally {
+            mAndroidDispatch.dispatchFinished(mDispatchId, mClazz);
+        }
+
     }
 
     public String getDispatchId() {
