@@ -33,7 +33,7 @@ and
 <code>androidDispatch.destroy(boolean mayInterruptThreads)</code>
 
 
-### V0.0.1 (2015-02-29): First draft code
+### V0.0.1 (2015-03-01): First draft code
 
 License
 -------
