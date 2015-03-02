@@ -1,6 +1,15 @@
 # Android Central Dispatch
 
-A minimalistic Dispatch Center for Android: Define the ammount of threads each module may run at each time, and dispatch the runnable for the central ThreadPool
+A minimalistic Dispatch Center for Android: 
+- Create an AndroidDispatch with a maximum ammount of concurrent running threads
+- Define the ammount of threads each module may run at each time
+- Dispatch the runnables 
+- See magic happening.
+
+
+Disclaimer 
+---------------------
+This is still very much a work in progress, when the lib is ready for general use I'll improve the documentation. My personal deadline is 1 May 2015 for the 1.0 release.
 
 
 General Usage and API
